@@ -1,0 +1,69 @@
+@use './variables' as *;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  color: $text;
+  background: $page-bg;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page-container {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.page-title {
+  margin: 0 0 18px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.section-title {
+  margin: 0 0 16px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.muted {
+  color: $muted;
+}
+
+.panel {
+  padding: 20px;
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: 8px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    width: min(100% - 24px, 1180px);
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+}
