@@ -1,19 +1,24 @@
 <script setup>
 import { onMounted, ref } from 'vue'
+import { Bell, Brush, Camera, Discount, House, Monitor, Setting } from '@element-plus/icons-vue'
 import ServiceCard from '@/components/ServiceCard.vue'
+import { getAnnouncements } from '@/api/operation'
 import { getHotServices } from '@/api/service'
 
 const hotServices = ref([])
+const announcements = ref([])
 const categories = [
-  { name: '家政保洁', value: 'cleaning' },
-  { name: '维修清洗', value: 'repair' },
-  { name: '摄影拍摄', value: 'photo' },
-  { name: '兴趣课程', value: 'course' },
-  { name: '美容护理', value: 'beauty' },
+  { name: '家政保洁', value: 'cleaning', icon: House },
+  { name: '维修清洗', value: 'repair', icon: Setting },
+  { name: '摄影拍摄', value: 'photo', icon: Camera },
+  { name: '兴趣课程', value: 'course', icon: Monitor },
+  { name: '美容护理', value: 'beauty', icon: Brush },
 ]
 
 onMounted(async () => {
-  hotServices.value = await getHotServices()
+  const [hotResult, noticeResult] = await Promise.all([getHotServices(), getAnnouncements({ scene: 'home' })])
+  hotServices.value = hotResult
+  announcements.value = noticeResult
 })
 </script>
 
@@ -28,9 +33,16 @@ onMounted(async () => {
         </p>
         <div class="hero-actions">
           <el-button type="primary" size="large" @click="$router.push('/services')">立即预约</el-button>
-          <el-button size="large" @click="$router.push('/login')">体验登录</el-button>
+          <el-button :icon="Discount" size="large" @click="$router.push('/coupons')">领取优惠券</el-button>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section v-if="announcements.length" class="page-container notice-section">
+    <div class="notice-strip">
+      <el-icon><Bell /></el-icon>
+      <span v-for="item in announcements.slice(0, 2)" :key="item.id">{{ item.title }}</span>
     </div>
   </section>
 
@@ -38,6 +50,7 @@ onMounted(async () => {
     <h2 class="section-title">服务分类</h2>
     <div class="category-grid">
       <router-link v-for="item in categories" :key="item.value" :to="`/services?category=${item.value}`" class="category-item">
+        <el-icon><component :is="item.icon" /></el-icon>
         <span>{{ item.name }}</span>
         <small>查看服务</small>
       </router-link>
@@ -117,6 +130,21 @@ onMounted(async () => {
   padding: 34px 0;
 }
 
+.notice-section {
+  padding-top: 18px;
+}
+
+.notice-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 16px;
+  color: #166534;
+  background: #dcfce7;
+  border-radius: 8px;
+}
+
 .section-head {
   display: flex;
   align-items: center;
@@ -137,6 +165,11 @@ onMounted(async () => {
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
+
+  .el-icon {
+    color: #1f7a5c;
+    font-size: 28px;
+  }
 
   span {
     font-size: 18px;

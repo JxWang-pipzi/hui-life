@@ -5,6 +5,7 @@ export const users = [
     password: '123456',
     name: '管理员',
     role: 'admin',
+    roleIds: [1],
     phone: '13800000001',
     status: 'enabled',
   },
@@ -14,7 +15,18 @@ export const users = [
     password: '123456',
     name: '普通用户',
     role: 'user',
+    roleIds: [4],
     phone: '13800000002',
+    status: 'enabled',
+  },
+  {
+    id: 4,
+    username: 'operator',
+    password: '123456',
+    name: '运营专员',
+    role: 'admin',
+    roleIds: [2],
+    phone: '13800000004',
     status: 'enabled',
   },
   {
@@ -23,8 +35,50 @@ export const users = [
     password: '123456',
     name: '停用用户',
     role: 'user',
+    roleIds: [4],
     phone: '13800000003',
     status: 'disabled',
+  },
+]
+
+export const permissions = [
+  { code: 'dashboard:view', name: '数据概览', group: '工作台' },
+  { code: 'service:manage', name: '服务管理', group: '业务管理' },
+  { code: 'order:manage', name: '订单管理', group: '业务管理' },
+  { code: 'after-sale:manage', name: '售后处理', group: '业务管理' },
+  { code: 'user:manage', name: '用户管理', group: '系统管理' },
+  { code: 'role:manage', name: '角色权限', group: '系统管理' },
+  { code: 'log:view', name: '操作日志', group: '系统管理' },
+]
+
+export const roles = [
+  {
+    id: 1,
+    name: '超级管理员',
+    code: 'super_admin',
+    desc: '拥有后台全部权限，负责账号、角色和业务配置。',
+    permissions: permissions.map((item) => item.code),
+  },
+  {
+    id: 2,
+    name: '运营专员',
+    code: 'operator',
+    desc: '负责服务、订单、售后和评价运营。',
+    permissions: ['dashboard:view', 'service:manage', 'order:manage', 'after-sale:manage', 'log:view'],
+  },
+  {
+    id: 3,
+    name: '客服专员',
+    code: 'support',
+    desc: '负责订单跟进和售后处理。',
+    permissions: ['dashboard:view', 'order:manage', 'after-sale:manage'],
+  },
+  {
+    id: 4,
+    name: '普通用户',
+    code: 'customer',
+    desc: '前台预约、评价和售后申请。',
+    permissions: [],
   },
 ]
 
@@ -39,6 +93,7 @@ export const services = [
     rating: 4.9,
     cover: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80',
     desc: '厨房、卫生间、客厅、卧室全屋清洁，适合入住前后和节假日大扫除。',
+    guarantee: ['2 小时内确认预约', '服务不满意可申请售后', '工具耗材由服务商提供'],
   },
   {
     id: 102,
@@ -50,6 +105,7 @@ export const services = [
     rating: 4.8,
     cover: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=800&q=80',
     desc: '挂机、柜机基础清洗，包含滤网、外壳、蒸发器清洁和运行检测。',
+    guarantee: ['上门前电话确认', '清洗后现场试机', '异常问题可售后复核'],
   },
   {
     id: 103,
@@ -61,6 +117,7 @@ export const services = [
     rating: 4.7,
     cover: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80',
     desc: '提供证件照、职业形象照拍摄，含基础修图和电子版交付。',
+    guarantee: ['提前沟通拍摄要求', '电子版 24 小时内交付', '基础修图包含在套餐内'],
   },
   {
     id: 104,
@@ -72,6 +129,7 @@ export const services = [
     rating: 4.9,
     cover: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
     desc: 'Scratch 图形化编程体验课，适合 7-12 岁零基础儿童。',
+    guarantee: ['课前学习顾问确认', '可预约线上或到店', '体验后提供学习建议'],
   },
   {
     id: 105,
@@ -83,6 +141,7 @@ export const services = [
     rating: 4.6,
     cover: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80',
     desc: '基础修甲、死皮护理、单色甲油胶，支持到店和预约上门。',
+    guarantee: ['工具消毒可查', '款式到店确认', '7 天内非人为脱落可补修'],
   },
   {
     id: 106,
@@ -94,6 +153,7 @@ export const services = [
     rating: 4.8,
     cover: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
     desc: '开关、插座、水龙头、软管等常见小修，材料费按实际另计。',
+    guarantee: ['师傅持证上门', '材料费用现场确认', '维修后 7 天质保'],
   },
 ]
 
@@ -108,6 +168,8 @@ export const orders = [
     address: '上海市浦东新区世纪大道 100 号',
     appointmentTime: '2026-07-09 10:00',
     status: 'pending',
+    reviewStatus: 'none',
+    afterSaleStatus: 'none',
     remark: '家里有老人，上午方便。',
     createdAt: '2026-07-03 14:20',
   },
@@ -120,8 +182,83 @@ export const orders = [
     phone: '13800000002',
     address: '杭州市西湖区文三路 88 号',
     appointmentTime: '2026-07-10 15:30',
-    status: 'confirmed',
+    status: 'completed',
+    reviewStatus: 'done',
+    afterSaleStatus: 'processing',
     remark: '两台挂机。',
     createdAt: '2026-07-04 09:15',
+  },
+]
+
+export const addresses = [
+  {
+    id: 7001,
+    userId: 2,
+    contactName: '普通用户',
+    phone: '13800000002',
+    city: '上海市',
+    district: '浦东新区',
+    detail: '世纪大道 100 号 3 栋 1201',
+    isDefault: true,
+  },
+  {
+    id: 7002,
+    userId: 2,
+    contactName: '普通用户',
+    phone: '13800000002',
+    city: '杭州市',
+    district: '西湖区',
+    detail: '文三路 88 号 2 单元 601',
+    isDefault: false,
+  },
+]
+
+export const reviews = [
+  {
+    id: 8001,
+    orderId: 9002,
+    serviceId: 102,
+    serviceTitle: '空调清洗维护',
+    userId: 2,
+    userName: '普通用户',
+    rating: 5,
+    content: '师傅准时，清洗后空调异味明显少了，现场也做了试机。',
+    tags: ['准时', '服务专业'],
+    createdAt: '2026-07-05 18:30',
+  },
+]
+
+export const afterSales = [
+  {
+    id: 8101,
+    orderId: 9002,
+    serviceId: 102,
+    serviceTitle: '空调清洗维护',
+    userId: 2,
+    userName: '普通用户',
+    phone: '13800000002',
+    reason: '清洗后仍有轻微异味，希望安排师傅复查。',
+    status: 'processing',
+    solution: '已联系服务商，预计 24 小时内回访并安排复查。',
+    createdAt: '2026-07-05 19:10',
+  },
+]
+
+export const operationLogs = [
+  {
+    id: 10001,
+    operator: '管理员',
+    action: '修改订单状态',
+    target: '家庭深度保洁 #9001',
+    detail: '将订单状态调整为待确认',
+    createdAt: '2026-07-05 18:20',
+  },
+  {
+    id: 10002,
+    operator: '运营专员',
+    action: '处理售后',
+    target: '空调清洗维护 #8101',
+    detail: '已联系服务商安排复查',
+    createdAt: '2026-07-05 19:30',
   },
 ]

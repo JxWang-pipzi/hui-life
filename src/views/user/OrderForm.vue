@@ -2,6 +2,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { getAddresses } from '@/api/address'
 import { createOrder } from '@/api/order'
 import { getServiceDetail } from '@/api/service'
 import { phoneRule, required } from '@/utils/validate'
@@ -11,6 +12,7 @@ const router = useRouter()
 const formRef = ref()
 const loading = ref(false)
 const service = ref(null)
+const addresses = ref([])
 const form = reactive({
   customerName: '',
   phone: '',
@@ -24,6 +26,16 @@ const rules = {
   phone: [phoneRule()],
   address: [required('请输入服务地址')],
   appointmentTime: [required('请选择预约时间')],
+}
+
+function formatAddress(item) {
+  return `${item.city}${item.district}${item.detail}`
+}
+
+function useAddress(item) {
+  form.customerName = item.contactName
+  form.phone = item.phone
+  form.address = formatAddress(item)
 }
 
 async function submitOrder() {
@@ -42,7 +54,14 @@ async function submitOrder() {
 }
 
 onMounted(async () => {
-  service.value = await getServiceDetail(route.params.id)
+  const [serviceResult, addressResult] = await Promise.all([getServiceDetail(route.params.id), getAddresses().catch(() => [])])
+  service.value = serviceResult
+  addresses.value = addressResult
+
+  const defaultAddress = addressResult.find((item) => item.isDefault)
+  if (defaultAddress) {
+    useAddress(defaultAddress)
+  }
 })
 </script>
 
@@ -52,6 +71,12 @@ onMounted(async () => {
     <div class="order-grid">
       <div class="panel">
         <h2 class="section-title">预约信息</h2>
+        <div v-if="addresses.length" class="address-shortcuts">
+          <button v-for="item in addresses" :key="item.id" type="button" @click="useAddress(item)">
+            <strong>{{ item.contactName }} {{ item.phone }}</strong>
+            <span>{{ formatAddress(item) }}</span>
+          </button>
+        </div>
         <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
           <el-form-item label="联系人" prop="customerName">
             <el-input v-model="form.customerName" placeholder="请输入联系人姓名" />
@@ -101,6 +126,31 @@ onMounted(async () => {
 
 .full {
   width: 100%;
+}
+
+.address-shortcuts {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+
+  button {
+    padding: 12px;
+    text-align: left;
+    cursor: pointer;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+
+  strong,
+  span {
+    display: block;
+  }
+
+  span {
+    margin-top: 6px;
+    color: #6b7280;
+  }
 }
 
 .service-summary {

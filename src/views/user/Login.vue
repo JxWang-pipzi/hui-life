@@ -25,7 +25,8 @@ async function handleLogin() {
   try {
     await userStore.login(form)
     ElMessage.success('登录成功')
-    router.push(route.query.redirect || '/')
+    const fallback = userStore.isMerchant ? '/merchant/dashboard' : userStore.isAdmin ? '/admin/dashboard' : '/'
+    router.push(route.query.redirect || fallback)
   } finally {
     loading.value = false
   }
@@ -35,13 +36,18 @@ function fillAdmin() {
   form.username = 'admin'
   form.password = '123456'
 }
+
+function fillMerchant() {
+  form.username = 'merchant_clean'
+  form.password = '123456'
+}
 </script>
 
 <template>
   <div class="login-page">
     <div class="login-card">
       <h1>惠生活登录</h1>
-      <p>普通用户：user / 123456，管理员：admin / 123456</p>
+      <p>普通用户：user / 123456，管理员：admin / 123456，商家：merchant_clean / 123456</p>
       <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
         <el-form-item label="账号" prop="username">
           <el-input v-model="form.username" />
@@ -49,8 +55,12 @@ function fillAdmin() {
         <el-form-item label="密码" prop="password">
           <el-input v-model="form.password" type="password" show-password @keyup.enter="handleLogin" />
         </el-form-item>
-        <el-button type="primary" :loading="loading" class="submit" @click="handleLogin">登录</el-button>
-        <el-button class="submit" @click="fillAdmin">填入管理员账号</el-button>
+        <div class="button-stack">
+          <el-button type="primary" :loading="loading" @click="handleLogin">登录</el-button>
+          <el-button plain @click="fillAdmin">填入管理员账号</el-button>
+          <el-button plain @click="fillMerchant">填入商家账号</el-button>
+          <el-button text @click="$router.push('/register')">没有账号，去注册</el-button>
+        </div>
       </el-form>
     </div>
   </div>
@@ -61,7 +71,8 @@ function fillAdmin() {
   display: grid;
   min-height: 100vh;
   place-items: center;
-  padding: 20px;
+  box-sizing: border-box;
+  padding: 28px;
   background:
     linear-gradient(135deg, rgba(31, 122, 92, 0.94), rgba(18, 53, 43, 0.84)),
     url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1600&q=80')
@@ -85,8 +96,15 @@ function fillAdmin() {
   }
 }
 
-.submit {
-  width: 100%;
-  margin: 8px 0 0;
+.button-stack {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+
+  .el-button {
+    width: 100%;
+    height: 40px;
+    margin: 0;
+  }
 }
 </style>

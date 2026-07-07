@@ -78,6 +78,30 @@ onBeforeUnmount(() => {
         <span>待确认</span>
         <strong>{{ stats.pendingCount }}</strong>
       </div>
+      <div class="stat-card">
+        <span>用户评价</span>
+        <strong>{{ stats.reviewCount }}</strong>
+      </div>
+      <div class="stat-card">
+        <span>待处理售后</span>
+        <strong>{{ stats.afterSalePendingCount }}</strong>
+      </div>
+      <div class="stat-card">
+        <span>角色数量</span>
+        <strong>{{ stats.roleCount }}</strong>
+      </div>
+      <div class="stat-card">
+        <span>操作日志</span>
+        <strong>{{ stats.logCount }}</strong>
+      </div>
+      <div class="stat-card">
+        <span>公告数量</span>
+        <strong>{{ stats.announcementCount }}</strong>
+      </div>
+      <div class="stat-card">
+        <span>优惠券数量</span>
+        <strong>{{ stats.couponCount }}</strong>
+      </div>
     </div>
 
     <div class="chart-grid">
@@ -128,8 +152,13 @@ onBeforeUnmount(() => {
   height: 320px;
 }
 
+@media (max-width: 1100px) {
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 900px) {
-  .stats-grid,
   .chart-grid {
     grid-template-columns: 1fr 1fr;
   }

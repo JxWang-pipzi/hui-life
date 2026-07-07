@@ -5,6 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:web": "vite",
+    "dev:api": "pnpm --filter life-booking-api dev",
+    "dev:all": "pnpm -r --parallel --filter life-booking --filter life-booking-api dev",
+    "db:init": "pnpm --filter life-booking-api db:init",
+    "build:web": "vite build",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",

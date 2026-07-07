@@ -12,6 +12,10 @@ export function getServiceDetail(id) {
   return request.get(`/services/${id}`)
 }
 
+export function getServiceReviews(params) {
+  return request.get('/reviews', { params })
+}
+
 export function getAdminServices(params) {
   return request.get('/admin/services', { params })
 }

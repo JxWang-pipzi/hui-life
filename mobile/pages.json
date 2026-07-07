@@ -1,0 +1,138 @@
+{
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^uni-icons$": "@/components/uni-icons/uni-icons.vue",
+      "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+    }
+  },
+  "pages": [
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "惠生活"
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/register/index",
+      "style": {
+        "navigationBarTitleText": "注册"
+      }
+    },
+    {
+      "path": "pages/services/index",
+      "style": {
+        "navigationBarTitleText": "服务预约"
+      }
+    },
+    {
+      "path": "pages/services/detail",
+      "style": {
+        "navigationBarTitleText": "服务详情"
+      }
+    },
+    {
+      "path": "pages/services/booking",
+      "style": {
+        "navigationBarTitleText": "提交预约"
+      }
+    },
+    {
+      "path": "pages/orders/index",
+      "style": {
+        "navigationBarTitleText": "我的订单"
+      }
+    },
+    {
+      "path": "pages/coupons/index",
+      "style": {
+        "navigationBarTitleText": "优惠券中心"
+      }
+    },
+    {
+      "path": "pages/notices/index",
+      "style": {
+        "navigationBarTitleText": "公告消息"
+      }
+    },
+    {
+      "path": "pages/merchant/apply",
+      "style": {
+        "navigationBarTitleText": "商家入驻"
+      }
+    },
+    {
+      "path": "pages/merchant/index",
+      "style": {
+        "navigationBarTitleText": "商家版"
+      }
+    },
+    {
+      "path": "pages/merchant/orders",
+      "style": {
+        "navigationBarTitleText": "商家订单"
+      }
+    },
+    {
+      "path": "pages/merchant/services",
+      "style": {
+        "navigationBarTitleText": "商家服务"
+      }
+    },
+    {
+      "path": "pages/merchant/reviews",
+      "style": {
+        "navigationBarTitleText": "商家评价"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "惠生活",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f5f7fb"
+  },
+  "tabBar": {
+    "color": "#6b7280",
+    "selectedColor": "#1f7a5c",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "static/tabbar/home-normal.png",
+        "selectedIconPath": "static/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/services/index",
+        "text": "服务",
+        "iconPath": "static/tabbar/services-normal.png",
+        "selectedIconPath": "static/tabbar/services-active.png"
+      },
+      {
+        "pagePath": "pages/orders/index",
+        "text": "订单",
+        "iconPath": "static/tabbar/orders-normal.png",
+        "selectedIconPath": "static/tabbar/orders-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/tabbar/profile-normal.png",
+        "selectedIconPath": "static/tabbar/profile-active.png"
+      }
+    ]
+  }
+}

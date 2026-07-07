@@ -9,8 +9,15 @@ lerna-debug.log*
 
 node_modules
 dist
+**/dist
 dist-ssr
 *.local
+server/.env
+
+# uni-app build artifacts and generated signing cache
+mobile/unpackage/cache
+mobile/unpackage/release
+mobile/**/*.apk
 
 # Editor directories and files
 .vscode/*

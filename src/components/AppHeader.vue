@@ -14,6 +14,8 @@ const userStore = useUserStore()
         <router-link to="/">首页</router-link>
         <router-link to="/services">服务预约</router-link>
         <router-link to="/my-orders">我的订单</router-link>
+        <router-link to="/coupons">优惠券</router-link>
+        <router-link to="/addresses">地址管理</router-link>
         <router-link v-if="userStore.isAdmin" to="/admin">后台管理</router-link>
       </nav>
 
@@ -26,6 +28,8 @@ const userStore = useUserStore()
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item @click="$router.push('/my-orders')">我的订单</el-dropdown-item>
+                <el-dropdown-item @click="$router.push('/coupons')">优惠券</el-dropdown-item>
+                <el-dropdown-item @click="$router.push('/addresses')">地址管理</el-dropdown-item>
                 <el-dropdown-item v-if="userStore.isAdmin" @click="$router.push('/admin')">
                   后台管理
                 </el-dropdown-item>
@@ -44,6 +48,8 @@ const userStore = useUserStore()
             <el-dropdown-item @click="$router.push('/')">首页</el-dropdown-item>
             <el-dropdown-item @click="$router.push('/services')">服务预约</el-dropdown-item>
             <el-dropdown-item @click="$router.push('/my-orders')">我的订单</el-dropdown-item>
+            <el-dropdown-item @click="$router.push('/coupons')">优惠券</el-dropdown-item>
+            <el-dropdown-item @click="$router.push('/addresses')">地址管理</el-dropdown-item>
             <el-dropdown-item v-if="userStore.isAdmin" @click="$router.push('/admin')">
               后台管理
             </el-dropdown-item>
