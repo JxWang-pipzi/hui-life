@@ -18,6 +18,10 @@ export function request(path, options = {}) {
       },
       success: (response) => {
         const result = response.data
+        if (!result || typeof result !== 'object') {
+          reject(new Error('接口返回格式异常'))
+          return
+        }
         if (response.statusCode === 401 || result.code === 401) {
           uni.showToast({ title: '请先登录', icon: 'none' })
           uni.navigateTo({ url: '/pages/login/index' })
@@ -31,7 +35,9 @@ export function request(path, options = {}) {
         }
         resolve(result.data)
       },
-      fail: reject,
+      fail: (error) => {
+        reject(error)
+      },
     })
   })
 }
