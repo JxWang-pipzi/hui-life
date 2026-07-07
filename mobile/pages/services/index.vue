@@ -1,5 +1,6 @@
 <script setup>
 import { onBeforeUnmount, onMounted, reactive, ref } from 'vue'
+import AppIcon from '../../components/AppIcon.vue'
 import { getCategories, getServices } from '../../api/mock'
 
 const categories = ref([])
@@ -60,7 +61,14 @@ onBeforeUnmount(() => {
           :class="{ active: query.category === item.value }"
           @click="selectCategory(item.value)"
         >
-          <uni-icons :type="item.icon" size="15" :color="query.category === item.value ? '#fff' : '#1f7a5c'" />
+          <AppIcon
+            :type="item.value"
+            :size="36"
+            :font-size="18"
+            radius="50%"
+            :color="query.category === item.value ? '#fff' : '#1f7a5c'"
+            :bg-color="query.category === item.value ? 'rgba(255,255,255,0.18)' : '#e9f7f1'"
+          />
           {{ item.label }}
         </view>
       </view>

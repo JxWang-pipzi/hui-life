@@ -1,6 +1,7 @@
 <script setup>
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+import AppIcon from '../../components/AppIcon.vue'
 import { getProfile } from '../../api/mock'
 
 const userInfo = ref(null)
@@ -96,14 +97,12 @@ onShow(fetchProfile)
 
     <view class="menu card">
       <view v-for="item in menus" :key="item.title" class="menu-item" @click="openMenu(item)">
-        <view class="menu-icon">
-          <uni-icons :type="item.icon" size="21" color="#1f7a5c" />
-        </view>
+        <AppIcon :type="item.icon" :size="58" :font-size="24" />
         <view>
           <text class="menu-title">{{ item.title }}</text>
           <text class="muted">{{ item.desc }}</text>
         </view>
-        <uni-icons type="right" size="18" color="#9ca3af" />
+        <text class="menu-arrow">›</text>
       </view>
     </view>
   </view>
@@ -211,16 +210,6 @@ onShow(fetchProfile)
   border-bottom: 1rpx solid #e5e7eb;
 }
 
-.menu-icon {
-  display: grid;
-  flex-shrink: 0;
-  place-items: center;
-  width: 58rpx;
-  height: 58rpx;
-  background: #e9f7f1;
-  border-radius: 16rpx;
-}
-
 .menu-item > view:nth-child(2) {
   flex: 1;
 }
@@ -234,7 +223,7 @@ onShow(fetchProfile)
   font-size: 30rpx;
 }
 
-.arrow {
+.menu-arrow {
   color: #9ca3af;
   font-size: 44rpx;
 }

@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
+import AppIcon from '../../components/AppIcon.vue'
 import { getAnnouncements, getCategories, getCoupons, getHotServices, receiveCoupon } from '../../api/mock'
 
 const categories = ref([])
@@ -114,9 +115,7 @@ onMounted(async () => {
       <scroll-view scroll-x class="category-scroll">
         <view class="category-row">
           <view v-for="item in categories" :key="item.value" class="category-pill" @click="goServices(item.value)">
-            <view class="category-icon">
-              <uni-icons :type="item.icon" size="22" color="#1f7a5c" />
-            </view>
+            <AppIcon :type="item.value" :size="52" :font-size="24" radius="50%" />
             <text>{{ item.label }}</text>
           </view>
         </view>
@@ -129,9 +128,7 @@ onMounted(async () => {
       </view>
       <view class="module-grid">
         <view v-for="item in featureModules" :key="item.title" class="module-card" @click="goModule(item)">
-          <view class="module-icon" :style="{ backgroundColor: `${item.color}18` }">
-            <uni-icons :type="item.icon" size="24" :color="item.color" />
-          </view>
+          <AppIcon :type="item.icon" :color="item.color" :bg-color="`${item.color}18`" :size="64" :font-size="26" />
           <view>
             <text class="module-title">{{ item.title }}</text>
             <text class="muted">{{ item.desc }}</text>
@@ -278,15 +275,6 @@ onMounted(async () => {
   border-radius: 999rpx;
 }
 
-.category-icon {
-  display: grid;
-  place-items: center;
-  width: 52rpx;
-  height: 52rpx;
-  background: #e9f7f1;
-  border-radius: 50%;
-}
-
 .service-list {
   display: grid;
   gap: 18rpx;
@@ -307,15 +295,6 @@ onMounted(async () => {
   min-width: 0;
   padding: 22rpx;
   background: #fff;
-  border-radius: 16rpx;
-}
-
-.module-icon {
-  display: grid;
-  flex-shrink: 0;
-  place-items: center;
-  width: 64rpx;
-  height: 64rpx;
   border-radius: 16rpx;
 }
 

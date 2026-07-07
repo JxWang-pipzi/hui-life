@@ -1,4 +1,6 @@
 <script setup>
+import AppIcon from './AppIcon.vue'
+
 const props = defineProps({
   current: {
     type: String,
@@ -7,10 +9,10 @@ const props = defineProps({
 })
 
 const tabs = [
-  { key: 'dashboard', text: '工作台', icon: 'home', url: '/pages/merchant/index' },
-  { key: 'orders', text: '订单', icon: 'calendar', url: '/pages/merchant/orders' },
-  { key: 'services', text: '服务', icon: 'list', url: '/pages/merchant/services' },
-  { key: 'reviews', text: '评价', icon: 'star', url: '/pages/merchant/reviews' },
+  { key: 'dashboard', text: '工作台', icon: 'dashboard', url: '/pages/merchant/index' },
+  { key: 'orders', text: '订单', icon: 'order', url: '/pages/merchant/orders' },
+  { key: 'services', text: '服务', icon: 'services', url: '/pages/merchant/services' },
+  { key: 'reviews', text: '评价', icon: 'reviews', url: '/pages/merchant/reviews' },
 ]
 
 function switchTab(item) {
@@ -28,7 +30,14 @@ function switchTab(item) {
       :class="{ active: current === item.key }"
       @click="switchTab(item)"
     >
-      <uni-icons :type="item.icon" size="21" :color="current === item.key ? '#1f7a5c' : '#6b7280'" />
+      <AppIcon
+        :type="item.icon"
+        :size="44"
+        :font-size="20"
+        :radius="14"
+        :color="current === item.key ? '#1f7a5c' : '#6b7280'"
+        :bg-color="current === item.key ? '#e9f7f1' : '#f3f4f6'"
+      />
       <text>{{ item.text }}</text>
     </view>
   </view>
