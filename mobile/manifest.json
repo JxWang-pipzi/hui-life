@@ -4,6 +4,7 @@
     "description" : "本地生活服务预约 uni-app 移动端练习项目",
     "versionName" : "0.0.1",
     "versionCode" : "1",
+    "vueVersion" : "3",
     "transformPx" : false,
     "h5" : {
         "router" : {
