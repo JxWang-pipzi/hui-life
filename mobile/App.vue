@@ -28,22 +28,23 @@ export default {
 
 page {
   min-height: 100%;
-  color: #1f2937;
-  background: #f5f7fb;
+  color: #0f172a;
+  background: #f1f5f9;
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 
 .page {
   min-height: 100vh;
-  padding: 24rpx;
+  padding: 24rpx 24rpx calc(32rpx + env(safe-area-inset-bottom));
 }
 
 .card {
   padding: 28rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 8rpx 24rpx rgba(15, 23, 42, 0.06);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1rpx solid rgba(148, 163, 184, 0.2);
+  border-radius: 24rpx;
+  box-shadow: 0 14rpx 40rpx rgba(15, 23, 42, 0.07);
 }
 
 .muted {
@@ -52,7 +53,24 @@ page {
 
 .primary-button {
   color: #fff;
-  background: #1f7a5c;
-  border-radius: 999rpx;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0f766e, #14b8a6);
+  border-radius: 18rpx;
+  box-shadow: 0 12rpx 28rpx rgba(15, 118, 110, 0.22);
+}
+
+.primary-button::after {
+  border: 0;
+}
+
+button {
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+button:active {
+  opacity: 0.84;
+  transform: scale(0.98);
 }
 </style>

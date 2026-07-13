@@ -101,6 +101,13 @@ onShow(fetchOrders)
 
 <template>
   <view class="page">
+    <view class="orders-hero">
+      <text>ORDER CENTER</text>
+      <text>服务进度，一目了然</text>
+      <view>
+        <strong>{{ orders.length }}</strong><small>当前订单</small><strong>7天</strong><small>售后保障</small>
+      </view>
+    </view>
     <scroll-view scroll-x class="filter-scroll">
       <view class="filter-row">
         <view
@@ -157,7 +164,14 @@ onShow(fetchOrders)
         </view>
         <view class="actions">
           <button plain size="mini" @click="contactService(item)">联系服务商</button>
-          <button v-if="['pending', 'confirmed'].includes(item.status)" plain size="mini" @click="handleCancel(item)">取消</button>
+          <button
+            v-if="['pending', 'confirmed'].includes(item.status)"
+            plain
+            size="mini"
+            @click="handleCancel(item)"
+          >
+            取消
+          </button>
           <button
             v-if="item.status === 'completed' && item.reviewStatus !== 'done'"
             class="primary-button"
@@ -166,7 +180,9 @@ onShow(fetchOrders)
           >
             去评价
           </button>
-          <button v-else-if="item.reviewStatus === 'done'" plain disabled size="mini">已评价</button>
+          <button v-else-if="item.reviewStatus === 'done'" plain disabled size="mini">
+            已评价
+          </button>
         </view>
       </view>
     </view>
@@ -202,7 +218,11 @@ onShow(fetchOrders)
             {{ tag }}
           </text>
         </view>
-        <textarea v-model="reviewForm.content" class="review-input" placeholder="说说这次服务体验，比如准时、专业、沟通是否顺畅" />
+        <textarea
+          v-model="reviewForm.content"
+          class="review-input"
+          placeholder="说说这次服务体验，比如准时、专业、沟通是否顺畅"
+        />
         <button class="primary-button submit-review" @click="submitReview">提交评价</button>
       </view>
     </view>
@@ -210,6 +230,46 @@ onShow(fetchOrders)
 </template>
 
 <style scoped lang="scss">
+.orders-hero {
+  display: grid;
+  gap: 8rpx;
+  padding: 34rpx 30rpx;
+  margin-bottom: 22rpx;
+  color: #fff;
+  background:
+    radial-gradient(circle at 90% 12%, rgba(94, 234, 212, 0.28), transparent 34%),
+    linear-gradient(135deg, #07111f, #0f766e);
+  border-radius: 30rpx;
+  box-shadow: 0 20rpx 48rpx rgba(15, 23, 42, 0.15);
+
+  > text:first-child {
+    color: #5eead4;
+    font-size: 19rpx;
+    font-weight: 900;
+    letter-spacing: 2rpx;
+  }
+  > text:nth-child(2) {
+    font-size: 40rpx;
+    font-weight: 900;
+  }
+  > view {
+    display: grid;
+    grid-template-columns: auto 1fr auto 1fr;
+    gap: 12rpx;
+    align-items: center;
+    margin-top: 18rpx;
+    padding-top: 18rpx;
+    border-top: 1rpx solid rgba(255, 255, 255, 0.16);
+  }
+  strong {
+    font-size: 28rpx;
+  }
+  small {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 21rpx;
+  }
+}
+
 .order-list {
   display: grid;
   gap: 18rpx;
@@ -235,12 +295,14 @@ onShow(fetchOrders)
 
 .filter-pill.active {
   color: #fff;
-  background: #1f7a5c;
+  background: #0f766e;
+  box-shadow: 0 10rpx 24rpx rgba(15, 118, 110, 0.2);
 }
 
 .order-card {
   display: grid;
   gap: 18rpx;
+  border-radius: 24rpx;
 }
 
 .order-head,

@@ -56,8 +56,11 @@ onShow(fetchCoupons)
   gap: 20rpx;
   padding: 34rpx;
   color: #fff;
-  background: linear-gradient(135deg, #1f7a5c, #2f9f73);
-  border-radius: 24rpx;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(94, 234, 212, 0.32), transparent 36%),
+    linear-gradient(135deg, #07111f, #0f766e);
+  border-radius: 30rpx;
+  box-shadow: 0 20rpx 48rpx rgba(15, 23, 42, 0.16);
 }
 
 .summary-title {
@@ -85,7 +88,9 @@ onShow(fetchCoupons)
   gap: 18rpx;
   padding: 22rpx;
   background: #fff;
-  border-radius: 18rpx;
+  border: 1rpx solid #e2e8f0;
+  border-radius: 24rpx;
+  box-shadow: 0 12rpx 36rpx rgba(15, 23, 42, 0.05);
 }
 
 .coupon-left {

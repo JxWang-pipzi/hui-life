@@ -101,12 +101,12 @@
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "惠生活",
-    "navigationBarBackgroundColor": "#ffffff",
-    "backgroundColor": "#f5f7fb"
+    "navigationBarBackgroundColor": "#f8fafc",
+    "backgroundColor": "#f1f5f9"
   },
   "tabBar": {
     "color": "#6b7280",
-    "selectedColor": "#1f7a5c",
+    "selectedColor": "#0f766e",
     "backgroundColor": "#ffffff",
     "list": [
       {

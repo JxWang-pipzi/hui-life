@@ -47,8 +47,18 @@ onBeforeUnmount(() => {
 
 <template>
   <view class="page">
+    <view class="page-intro">
+      <text class="intro-kicker">SERVICE DIRECTORY</text>
+      <text class="intro-title">找到适合你的生活服务</text>
+      <text class="intro-desc">价格透明、评价真实、预约进度随时可查</text>
+    </view>
     <view class="search-card card">
-      <input v-model="query.keyword" placeholder="搜索保洁、维修、课程" confirm-type="search" @confirm="submitSearch" />
+      <input
+        v-model="query.keyword"
+        placeholder="搜索保洁、维修、课程"
+        confirm-type="search"
+        @confirm="submitSearch"
+      />
       <button class="primary-button" @click="submitSearch">搜索</button>
     </view>
 
@@ -106,12 +116,15 @@ onBeforeUnmount(() => {
   gap: 16rpx;
   align-items: center;
 
+  margin-top: -24rpx;
+  border: 1rpx solid #ccfbf1;
+
   input {
     flex: 1;
     height: 72rpx;
     padding: 0 20rpx;
-    background: #f5f7fb;
-    border-radius: 999rpx;
+    background: #f1f5f9;
+    border-radius: 16rpx;
   }
 
   button {
@@ -119,6 +132,30 @@ onBeforeUnmount(() => {
     margin: 0;
     font-size: 28rpx;
   }
+}
+
+.page-intro {
+  display: grid;
+  gap: 10rpx;
+  padding: 32rpx 30rpx 54rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #07111f, #0f766e);
+  border-radius: 28rpx;
+}
+
+.intro-kicker {
+  color: #5eead4;
+  font-size: 20rpx;
+  font-weight: 900;
+  letter-spacing: 2rpx;
+}
+.intro-title {
+  font-size: 40rpx;
+  font-weight: 900;
+}
+.intro-desc {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 24rpx;
 }
 
 .category-scroll {
@@ -143,7 +180,8 @@ onBeforeUnmount(() => {
 
 .category-pill.active {
   color: #fff;
-  background: #1f7a5c;
+  background: #0f766e;
+  box-shadow: 0 10rpx 24rpx rgba(15, 118, 110, 0.2);
 }
 
 .service-list {
@@ -155,10 +193,12 @@ onBeforeUnmount(() => {
   display: flex;
   gap: 20rpx;
 
+  border-radius: 24rpx;
+
   image {
     width: 190rpx;
     height: 180rpx;
-    border-radius: 14rpx;
+    border-radius: 18rpx;
   }
 }
 

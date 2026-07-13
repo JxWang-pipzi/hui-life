@@ -50,13 +50,16 @@ onLoad((options) => {
 <template>
   <view class="page login-page">
     <view class="login-card card">
+      <view class="brand-lockup"><text>惠生活</text><small>LIFE BOOKING</small></view>
       <text class="eyebrow">{{ mode === 'merchant' ? '商家登录' : '用户登录' }}</text>
       <text class="title">欢迎使用惠生活</text>
       <text class="muted">用户预约服务，商家接单经营。不同角色登录后进入对应功能。</text>
 
       <view class="mode-row">
         <view class="mode-pill" :class="{ active: mode === 'user' }" @click="fillUser">用户</view>
-        <view class="mode-pill" :class="{ active: mode === 'merchant' }" @click="fillMerchant">商家</view>
+        <view class="mode-pill" :class="{ active: mode === 'merchant' }" @click="fillMerchant">
+          商家
+        </view>
       </view>
 
       <view class="field">
@@ -69,7 +72,12 @@ onLoad((options) => {
       </view>
       <view class="button-stack">
         <button class="primary-button auth-button" @click="submitLogin">登录</button>
-        <button class="auth-button secondary" @click="uni.navigateTo({ url: '/pages/register/index' })">没有账号，去注册</button>
+        <button
+          class="auth-button secondary"
+          @click="uni.navigateTo({ url: '/pages/register/index' })"
+        >
+          没有账号，去注册
+        </button>
       </view>
       <text class="hint">
         {{ mode === 'merchant' ? '商家示例：merchant_clean / 123456' : '用户示例：user / 123456' }}
@@ -88,8 +96,9 @@ onLoad((options) => {
   min-height: 100vh;
   padding: 40rpx 32rpx;
   background:
-    linear-gradient(135deg, rgba(14, 58, 44, 0.9), rgba(31, 122, 92, 0.72)),
-    url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1000&q=80') center/cover;
+    linear-gradient(145deg, rgba(5, 12, 23, 0.96), rgba(15, 118, 110, 0.7)),
+    url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1000&q=80')
+      center/cover;
 }
 
 .login-card {
@@ -98,6 +107,30 @@ onLoad((options) => {
   box-sizing: border-box;
   width: 100%;
   overflow: hidden;
+  padding: 36rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.72);
+  border-radius: 30rpx;
+  box-shadow: 0 30rpx 80rpx rgba(5, 15, 25, 0.3);
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #e2e8f0;
+
+  text {
+    color: #0f172a;
+    font-size: 32rpx;
+    font-weight: 900;
+  }
+  small {
+    color: #0f766e;
+    font-size: 18rpx;
+    font-weight: 900;
+    letter-spacing: 2rpx;
+  }
 }
 
 .eyebrow,
@@ -134,7 +167,7 @@ onLoad((options) => {
 
 .mode-pill.active {
   color: #fff;
-  background: #1f7a5c;
+  background: #0f766e;
 }
 
 .field {

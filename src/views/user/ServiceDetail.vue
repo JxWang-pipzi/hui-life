@@ -21,8 +21,14 @@ onMounted(async () => {
   <div class="page-container detail-page">
     <el-skeleton v-if="!service" :rows="8" animated />
     <template v-else>
+      <div class="detail-breadcrumb">
+        <router-link to="/services">全部服务</router-link><span>/</span><span>{{ service.categoryName }}</span>
+      </div>
       <div class="detail-main">
-        <img :src="service.cover" :alt="service.title" loading="lazy" />
+        <div class="cover-wrap">
+          <img :src="service.cover" :alt="service.title" loading="lazy" />
+          <span>惠生活严选服务</span>
+        </div>
         <div class="panel info">
           <el-tag type="success">{{ service.categoryName }}</el-tag>
           <h1>{{ service.title }}</h1>
@@ -31,6 +37,9 @@ onMounted(async () => {
           <div class="stats">
             <span>评分 {{ service.rating }}</span>
             <span>已预约 {{ service.sales }}</span>
+          </div>
+          <div class="quick-promises">
+            <span>价格透明</span><span>准时上门</span><span>售后可追踪</span>
           </div>
           <el-button type="primary" size="large" @click="$router.push(`/booking/${service.id}`)">
             立即预约
@@ -41,7 +50,8 @@ onMounted(async () => {
       <div class="panel">
         <h2 class="section-title">服务说明</h2>
         <p class="content">
-          下单后工作人员会在 2 小时内确认预约时间。若需要修改地址或时间，可在订单确认前联系客服处理。
+          下单后工作人员会在 2
+          小时内确认预约时间。若需要修改地址或时间，可在订单确认前联系客服处理。
           完成服务后可提交评价，如遇服务质量问题可在订单页申请售后。
         </p>
         <div class="guarantee-list">
@@ -74,23 +84,63 @@ onMounted(async () => {
 .detail-page {
   display: grid;
   gap: 20px;
-  padding: 28px 0 44px;
+  padding: 28px 0 72px;
+}
+
+.detail-breadcrumb {
+  display: flex;
+  gap: 10px;
+  color: #64748b;
+  font-size: 14px;
+
+  a {
+    color: #0f766e;
+    font-weight: 700;
+  }
 }
 
 .detail-main {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 20px;
+}
 
-  > img {
+.cover-wrap {
+  position: relative;
+  overflow: hidden;
+  min-height: 460px;
+  background: #0f172a;
+  border-radius: 14px;
+
+  img {
     width: 100%;
-    height: 420px;
+    height: 100%;
+    min-height: 460px;
     object-fit: cover;
-    border-radius: 8px;
+  }
+
+  span {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 9px 13px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    background: rgba(15, 23, 42, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    backdrop-filter: blur(12px);
   }
 }
 
 .info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 34px;
+  border-radius: 14px;
+
   h1 {
     margin: 16px 0 12px;
     font-size: 30px;
@@ -99,6 +149,22 @@ onMounted(async () => {
   p {
     color: #6b7280;
     line-height: 1.7;
+  }
+}
+
+.quick-promises {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 26px;
+
+  span {
+    padding: 8px 11px;
+    color: #0f766e;
+    font-size: 13px;
+    font-weight: 700;
+    background: #f0fdfa;
+    border-radius: 999px;
   }
 }
 
@@ -172,10 +238,14 @@ onMounted(async () => {
 @media (max-width: 768px) {
   .detail-main {
     grid-template-columns: 1fr;
+  }
 
-    > img {
-      height: 260px;
-    }
+  .cover-wrap,
+  .cover-wrap img {
+    min-height: 280px;
+  }
+  .info {
+    padding: 22px;
   }
 }
 </style>

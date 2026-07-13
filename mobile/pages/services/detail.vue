@@ -47,7 +47,10 @@ onLoad(async (options) => {
 
 <template>
   <view v-if="service" class="detail-page">
-    <image class="cover" :src="service.cover" mode="aspectFill" />
+    <view class="cover-wrap">
+      <image class="cover" :src="service.cover" mode="aspectFill" />
+      <view class="cover-badge"><text>惠生活严选</text><small>QUALITY SERVICE</small></view>
+    </view>
     <view class="content">
       <view class="card service-card">
         <view class="title-row">
@@ -96,7 +99,12 @@ onLoad(async (options) => {
       <view class="card">
         <text class="section-title">套餐选择</text>
         <view class="package-list">
-          <view v-for="item in service.packages" :key="item.name" class="package-card" @click="goBooking(item)">
+          <view
+            v-for="item in service.packages"
+            :key="item.name"
+            class="package-card"
+            @click="goBooking(item)"
+          >
             <view>
               <text class="package-name">{{ item.name }}</text>
               <text class="muted">{{ item.duration }}</text>
@@ -152,9 +160,37 @@ onLoad(async (options) => {
   background: #f5f7fb;
 }
 
+.cover-wrap {
+  position: relative;
+}
+
 .cover {
   width: 100%;
   height: 430rpx;
+}
+
+.cover-badge {
+  position: absolute;
+  top: 28rpx;
+  left: 28rpx;
+  display: grid;
+  gap: 3rpx;
+  padding: 14rpx 18rpx;
+  color: #fff;
+  background: rgba(7, 17, 31, 0.72);
+  border: 1rpx solid rgba(255, 255, 255, 0.22);
+  border-radius: 16rpx;
+  backdrop-filter: blur(16rpx);
+
+  text {
+    font-size: 24rpx;
+    font-weight: 900;
+  }
+  small {
+    color: #5eead4;
+    font-size: 16rpx;
+    letter-spacing: 1rpx;
+  }
 }
 
 .content {
@@ -166,6 +202,8 @@ onLoad(async (options) => {
 
 .service-card {
   position: relative;
+  border-radius: 26rpx;
+  box-shadow: 0 20rpx 52rpx rgba(15, 23, 42, 0.12);
 }
 
 .title-row,
@@ -331,7 +369,9 @@ onLoad(async (options) => {
   bottom: 0;
   left: 0;
   padding: 18rpx 24rpx calc(18rpx + env(safe-area-inset-bottom));
-  background: #fff;
+  background: rgba(255, 255, 255, 0.96);
+  border-top: 1rpx solid #e2e8f0;
+  backdrop-filter: blur(18rpx);
   box-shadow: 0 -8rpx 24rpx rgba(15, 23, 42, 0.08);
 
   button {

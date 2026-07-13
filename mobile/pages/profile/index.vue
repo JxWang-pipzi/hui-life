@@ -7,12 +7,27 @@ import { getProfile } from '../../api/mock'
 const userInfo = ref(null)
 const menus = [
   { title: '优惠券中心', desc: '领取可用优惠券', icon: 'wallet', url: '/pages/coupons/index' },
-  { title: '公告消息', desc: '查看服务提醒和活动', icon: 'notification', url: '/pages/notices/index' },
+  {
+    title: '公告消息',
+    desc: '查看服务提醒和活动',
+    icon: 'notification',
+    url: '/pages/notices/index',
+  },
   { title: '服务预约', desc: '快速查找附近服务', icon: 'search', tab: '/pages/services/index' },
   { title: '我的订单', desc: '查看订单和售后进度', icon: 'calendar', tab: '/pages/orders/index' },
-  { title: '商家版工作台', desc: '接单、服务和评价管理', icon: 'compose', url: '/pages/merchant/index' },
+  {
+    title: '商家版工作台',
+    desc: '接单、服务和评价管理',
+    icon: 'compose',
+    url: '/pages/merchant/index',
+  },
   { title: '商家入驻', desc: '提交资料成为服务商', icon: 'person', url: '/pages/merchant/apply' },
-  { title: '售后规则', desc: '复查、返工、退款协商说明', icon: 'help', url: '/pages/notices/index?scene=order' },
+  {
+    title: '售后规则',
+    desc: '复查、返工、退款协商说明',
+    icon: 'help',
+    url: '/pages/notices/index?scene=order',
+  },
 ]
 
 async function fetchProfile() {
@@ -52,7 +67,10 @@ onShow(fetchProfile)
 </script>
 
 <template>
-  <view class="page">
+  <view class="page profile-page">
+    <view class="profile-hero">
+      <text>PERSONAL CENTER</text><text>我的惠生活</text><small>服务记录与权益统一管理</small>
+    </view>
     <view v-if="!userInfo" class="login-card card">
       <view>
         <text class="name">暂未登录</text>
@@ -71,7 +89,10 @@ onShow(fetchProfile)
           <text class="name">{{ userInfo.name }}</text>
           <uni-icons type="person" size="18" color="#1f7a5c" />
         </view>
-        <text class="muted">{{ userInfo.phone }} ｜ {{ userInfo.roles && userInfo.roles.map((item) => item.name).join('、') }}</text>
+        <text class="muted">
+          {{ userInfo.phone }} ｜
+          {{ userInfo.roles && userInfo.roles.map((item) => item.name).join('、') }}
+        </text>
       </view>
       <button plain size="mini" @click="logout">退出</button>
     </view>
@@ -115,6 +136,35 @@ onShow(fetchProfile)
   gap: 22rpx;
   align-items: center;
   justify-content: space-between;
+}
+
+.profile-hero {
+  display: grid;
+  gap: 8rpx;
+  padding: 36rpx 30rpx 74rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #07111f, #0f766e);
+  border-radius: 30rpx;
+
+  text:first-child {
+    color: #5eead4;
+    font-size: 19rpx;
+    font-weight: 900;
+    letter-spacing: 2rpx;
+  }
+  text:nth-child(2) {
+    font-size: 42rpx;
+    font-weight: 900;
+  }
+  small {
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 24rpx;
+  }
+}
+
+.profile-hero + .login-card,
+.profile-hero + .profile-card {
+  margin-top: -42rpx;
 }
 
 .profile-title {
@@ -165,7 +215,8 @@ onShow(fetchProfile)
   color: #fff;
   font-size: 42rpx;
   font-weight: 800;
-  background: #1f7a5c;
+  background: linear-gradient(135deg, #0f766e, #2dd4bf);
+  box-shadow: 0 10rpx 28rpx rgba(15, 118, 110, 0.24);
   border-radius: 50%;
 }
 

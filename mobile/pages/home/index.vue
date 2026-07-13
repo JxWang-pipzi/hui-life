@@ -1,18 +1,54 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import AppIcon from '../../components/AppIcon.vue'
-import { getAnnouncements, getCategories, getCoupons, getHotServices, receiveCoupon } from '../../api/mock'
+import {
+  getAnnouncements,
+  getCategories,
+  getCoupons,
+  getHotServices,
+  receiveCoupon,
+} from '../../api/mock'
 
 const categories = ref([])
 const hotServices = ref([])
 const coupons = ref([])
 const notices = ref([])
 const featureModules = [
-  { title: '领券中心', desc: '先领券再下单', icon: 'wallet', color: '#e35d2f', url: '/pages/coupons/index' },
-  { title: '公告消息', desc: '服务提醒', icon: 'notification', color: '#1f7a5c', url: '/pages/notices/index' },
-  { title: '我的订单', desc: '查看进度', icon: 'calendar', color: '#2563eb', tab: '/pages/orders/index' },
-  { title: '商家入驻', desc: '开通接单', icon: 'person', color: '#0f766e', url: '/pages/merchant/apply' },
-  { title: '售后说明', desc: '处理规则', icon: 'help', color: '#7c3aed', url: '/pages/notices/index?scene=order' },
+  {
+    title: '领券中心',
+    desc: '先领券再下单',
+    icon: 'wallet',
+    color: '#e35d2f',
+    url: '/pages/coupons/index',
+  },
+  {
+    title: '公告消息',
+    desc: '服务提醒',
+    icon: 'notification',
+    color: '#1f7a5c',
+    url: '/pages/notices/index',
+  },
+  {
+    title: '我的订单',
+    desc: '查看进度',
+    icon: 'calendar',
+    color: '#2563eb',
+    tab: '/pages/orders/index',
+  },
+  {
+    title: '商家入驻',
+    desc: '开通接单',
+    icon: 'person',
+    color: '#0f766e',
+    url: '/pages/merchant/apply',
+  },
+  {
+    title: '售后说明',
+    desc: '处理规则',
+    icon: 'help',
+    color: '#7c3aed',
+    url: '/pages/notices/index?scene=order',
+  },
 ]
 
 function goServices(category = '') {
@@ -65,13 +101,21 @@ onMounted(async () => {
 <template>
   <view class="page home-page">
     <view class="hero">
-      <text class="eyebrow">本地生活服务</text>
-      <text class="title">预约保洁、维修、课程，一部手机搞定</text>
-      <text class="desc">精选高频上门服务，先看服务、再领优惠、最后预约下单。</text>
+      <view class="hero-badge"><text>惠生活严选</text><text>HUI LIFE</text></view>
+      <text class="eyebrow">本地生活服务平台</text>
+      <text class="title">专业服务，准时预约到家。</text>
+      <text class="desc">保洁、维修、摄影、课程与护理，一站式浏览、预约和进度管理。</text>
       <button class="primary-button hero-button" @click="goServices()">立即预约</button>
+      <view class="hero-stats">
+        <view><text>4.8</text><small>综合评分</small></view><view><text>2600+</text><small>累计预约</small></view><view><text>7天</text><small>售后保障</small></view>
+      </view>
     </view>
 
-    <view v-if="notices.length" class="notice-bar" @click="uni.navigateTo({ url: '/pages/notices/index' })">
+    <view
+      v-if="notices.length"
+      class="notice-bar"
+      @click="uni.navigateTo({ url: '/pages/notices/index' })"
+    >
       <uni-icons type="sound" size="18" color="#1f7a5c" />
       <swiper class="notice-swiper" vertical circular autoplay interval="2600">
         <swiper-item v-for="item in notices" :key="item.id">
@@ -90,7 +134,12 @@ onMounted(async () => {
         <text class="link" @click="goServices()">全部</text>
       </view>
       <view class="service-list">
-        <view v-for="item in hotServices" :key="item.id" class="service-card card" @click="goDetail(item)">
+        <view
+          v-for="item in hotServices"
+          :key="item.id"
+          class="service-card card"
+          @click="goDetail(item)"
+        >
           <image :src="item.cover" mode="aspectFill" />
           <view class="service-info">
             <view class="service-title-row">
@@ -114,7 +163,12 @@ onMounted(async () => {
       </view>
       <scroll-view scroll-x class="category-scroll">
         <view class="category-row">
-          <view v-for="item in categories" :key="item.value" class="category-pill" @click="goServices(item.value)">
+          <view
+            v-for="item in categories"
+            :key="item.value"
+            class="category-pill"
+            @click="goServices(item.value)"
+          >
             <AppIcon :type="item.value" :size="52" :font-size="24" radius="50%" />
             <text>{{ item.label }}</text>
           </view>
@@ -127,8 +181,19 @@ onMounted(async () => {
         <text class="section-title">常用功能</text>
       </view>
       <view class="module-grid">
-        <view v-for="item in featureModules" :key="item.title" class="module-card" @click="goModule(item)">
-          <AppIcon :type="item.icon" :color="item.color" :bg-color="`${item.color}18`" :size="64" :font-size="26" />
+        <view
+          v-for="item in featureModules"
+          :key="item.title"
+          class="module-card"
+          @click="goModule(item)"
+        >
+          <AppIcon
+            :type="item.icon"
+            :color="item.color"
+            :bg-color="`${item.color}18`"
+            :size="64"
+            :font-size="26"
+          />
           <view>
             <text class="module-title">{{ item.title }}</text>
             <text class="muted">{{ item.desc }}</text>
@@ -143,7 +208,12 @@ onMounted(async () => {
         <text class="link" @click="uni.navigateTo({ url: '/pages/coupons/index' })">更多</text>
       </view>
       <view class="coupon-list">
-        <view v-for="item in coupons.slice(0, 3)" :key="item.id" class="coupon-card" @click="handleReceiveCoupon(item)">
+        <view
+          v-for="item in coupons.slice(0, 3)"
+          :key="item.id"
+          class="coupon-card"
+          @click="handleReceiveCoupon(item)"
+        >
           <view class="coupon-value">
             <text>¥{{ item.discountAmount }}</text>
             <small>满 {{ item.thresholdAmount }} 可用</small>
@@ -152,7 +222,11 @@ onMounted(async () => {
             <text class="coupon-title">{{ item.title }}</text>
             <text class="muted">适用分类：{{ item.category || '全部服务' }}</text>
           </view>
-          <view class="coupon-action" :class="{ disabled: item.received }">{{ item.received ? '已领' : '领取' }}</view>
+          <view class="coupon-action" :class="{ disabled: item.received }">
+            {{
+              item.received ? '已领' : '领取'
+            }}
+          </view>
         </view>
       </view>
     </view>
@@ -164,16 +238,30 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 18rpx;
-  padding: 44rpx 32rpx;
+  min-height: 470rpx;
+  padding: 38rpx 32rpx 30rpx;
   color: #fff;
   background:
-    linear-gradient(135deg, rgba(14, 58, 44, 0.95), rgba(31, 122, 92, 0.72)),
-    url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1000&q=80') center/cover;
-  border-radius: 24rpx;
+    linear-gradient(145deg, rgba(5, 12, 23, 0.97), rgba(15, 118, 110, 0.68)),
+    url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1000&q=80')
+      center/cover;
+  border: 1rpx solid rgba(255, 255, 255, 0.16);
+  border-radius: 32rpx;
+  box-shadow: 0 22rpx 54rpx rgba(15, 23, 42, 0.18);
+}
+
+.hero-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 20rpx;
+  font-weight: 800;
+  letter-spacing: 2rpx;
 }
 
 .eyebrow {
-  color: #bbf7d0;
+  color: #5eead4;
   font-size: 24rpx;
   font-weight: 700;
 }
@@ -191,9 +279,32 @@ onMounted(async () => {
 }
 
 .hero-button {
-  width: 240rpx;
+  width: 250rpx;
   margin: 12rpx 0 0;
   font-size: 28rpx;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12rpx;
+  padding-top: 22rpx;
+  margin-top: 8rpx;
+  border-top: 1rpx solid rgba(255, 255, 255, 0.16);
+
+  view {
+    display: grid;
+    gap: 4rpx;
+  }
+  text {
+    color: #fff;
+    font-size: 28rpx;
+    font-weight: 900;
+  }
+  small {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 20rpx;
+  }
 }
 
 .section {
@@ -221,7 +332,9 @@ onMounted(async () => {
   padding: 0 22rpx;
   margin-top: 20rpx;
   background: #fff;
-  border-radius: 16rpx;
+  border: 1rpx solid #ccfbf1;
+  border-radius: 20rpx;
+  box-shadow: 0 10rpx 30rpx rgba(15, 118, 110, 0.06);
 }
 
 .notice-swiper {
@@ -295,7 +408,8 @@ onMounted(async () => {
   min-width: 0;
   padding: 22rpx;
   background: #fff;
-  border-radius: 16rpx;
+  border: 1rpx solid #e2e8f0;
+  border-radius: 22rpx;
 }
 
 .module-title {
@@ -317,7 +431,8 @@ onMounted(async () => {
   align-items: center;
   padding: 20rpx;
   background: #fff;
-  border-radius: 16rpx;
+  border: 1rpx solid #e2e8f0;
+  border-radius: 22rpx;
 }
 
 .coupon-value {
@@ -365,6 +480,8 @@ onMounted(async () => {
   display: flex;
   gap: 20rpx;
   padding: 20rpx;
+
+  border-radius: 24rpx;
 
   image {
     width: 180rpx;
