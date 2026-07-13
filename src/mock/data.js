@@ -228,6 +228,88 @@ export const reviews = [
   },
 ]
 
+export const announcements = [
+  {
+    id: 6001,
+    title: '夏季家电清洗服务上线',
+    content: '空调、油烟机、洗衣机清洗支持预约上门，热门时段建议提前一天提交。',
+    scene: 'home',
+    status: 'published',
+    sort: 20,
+    createdAt: '2026-07-05 10:00',
+  },
+  {
+    id: 6002,
+    title: '新用户预约立减',
+    content: '领取优惠券后下单，指定服务满 100 元可直接抵扣。',
+    scene: 'coupon',
+    status: 'published',
+    sort: 18,
+    createdAt: '2026-07-05 11:00',
+  },
+  {
+    id: 6003,
+    title: '服务保障升级',
+    content: '平台订单支持评价、售后申请和服务商复核，体验问题可在线反馈。',
+    scene: 'home',
+    status: 'published',
+    sort: 12,
+    createdAt: '2026-07-06 09:30',
+  },
+]
+
+export const coupons = [
+  {
+    id: 5001,
+    title: '新客预约券',
+    thresholdAmount: 100,
+    discountAmount: 20,
+    category: '',
+    startAt: '2026-07-01 00:00',
+    endAt: '2026-08-31 23:59',
+    stock: 120,
+    status: 'enabled',
+    received: false,
+    createdAt: '2026-07-01 09:00',
+  },
+  {
+    id: 5002,
+    title: '家政保洁专享券',
+    thresholdAmount: 160,
+    discountAmount: 30,
+    category: '家政保洁',
+    startAt: '2026-07-01 00:00',
+    endAt: '2026-08-31 23:59',
+    stock: 80,
+    status: 'enabled',
+    received: false,
+    createdAt: '2026-07-01 09:10',
+  },
+  {
+    id: 5003,
+    title: '维修清洗体验券',
+    thresholdAmount: 120,
+    discountAmount: 25,
+    category: '维修清洗',
+    startAt: '2026-07-01 00:00',
+    endAt: '2026-08-31 23:59',
+    stock: 60,
+    status: 'enabled',
+    received: false,
+    createdAt: '2026-07-01 09:20',
+  },
+]
+
+export const userCoupons = [
+  {
+    id: 5101,
+    userId: 2,
+    couponId: 5002,
+    status: 'unused',
+    createdAt: '2026-07-06 12:00',
+  },
+]
+
 export const afterSales = [
   {
     id: 8101,

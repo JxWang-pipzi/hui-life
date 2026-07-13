@@ -34,11 +34,17 @@ defineProps({
   border-radius: 8px;
   transition:
     transform 0.2s ease,
+    border-color 0.2s ease,
     box-shadow 0.2s ease;
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    transform: translateY(-6px);
+    border-color: #14b8a6;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.13);
+
+    img {
+      transform: scale(1.06);
+    }
   }
 
   img {
@@ -46,6 +52,7 @@ defineProps({
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
+    transition: transform 0.36s ease;
   }
 }
 

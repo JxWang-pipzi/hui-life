@@ -1,4 +1,17 @@
-import { addresses, afterSales, operationLogs, orders, permissions, reviews, roles, services, users } from './data'
+import {
+  addresses,
+  afterSales,
+  announcements,
+  coupons,
+  operationLogs,
+  orders,
+  permissions,
+  reviews,
+  roles,
+  services,
+  userCoupons,
+  users,
+} from './data'
 
 let serviceList = [...services]
 let orderList = [...orders]
@@ -8,6 +21,8 @@ let reviewList = [...reviews]
 let afterSaleList = [...afterSales]
 let roleList = [...roles]
 let logList = [...operationLogs]
+let couponList = [...coupons]
+let userCouponList = [...userCoupons]
 
 const wait = (value) => new Promise((resolve) => setTimeout(() => resolve(value), 240))
 
@@ -124,6 +139,14 @@ function syncServiceRating(serviceId) {
   )
 }
 
+function couponOf(item, userId) {
+  if (!item) return null
+  return {
+    ...item,
+    received: userCouponList.some((record) => record.userId === userId && record.couponId === item.id),
+  }
+}
+
 async function handle(config) {
   const path = getPath(config)
   const method = (config.method || 'get').toLowerCase()
@@ -167,6 +190,64 @@ async function handle(config) {
       list = list.filter((item) => item.serviceId === serviceId)
     }
     return response(config, ok(pageResult(list, params.page, params.pageSize)))
+  }
+
+  if (path === '/announcements' && method === 'get') {
+    let list = announcements.filter((item) => item.status === 'published')
+    if (params.scene) {
+      list = list.filter((item) => item.scene === params.scene)
+    }
+    list.sort((a, b) => b.sort - a.sort || b.id - a.id)
+    return response(config, ok(list))
+  }
+
+  if (path === '/coupons' && method === 'get') {
+    const user = getUserByToken(config)
+    if (!user) return response(config, fail('未登录', 401), 401)
+    const list = couponList
+      .filter((item) => item.status === 'enabled')
+      .sort((a, b) => b.id - a.id)
+      .map((item) => couponOf(item, user.id))
+    return response(config, ok(list))
+  }
+
+  if (path.match(/^\/coupons\/\d+\/receive$/) && method === 'post') {
+    const user = getUserByToken(config)
+    if (!user) return response(config, fail('未登录', 401), 401)
+
+    const id = Number(path.split('/')[2])
+    const coupon = couponList.find((item) => item.id === id && item.status === 'enabled')
+    if (!coupon) return response(config, fail('优惠券不存在'))
+    if (userCouponList.some((item) => item.userId === user.id && item.couponId === id)) {
+      return response(config, fail('已领取该优惠券'))
+    }
+    if (coupon.stock <= 0) return response(config, fail('优惠券已领完'))
+
+    userCouponList.unshift({
+      id: Date.now(),
+      userId: user.id,
+      couponId: id,
+      status: 'unused',
+      createdAt: new Date().toLocaleString('zh-CN', { hour12: false }),
+    })
+    couponList = couponList.map((item) => (item.id === id ? { ...item, stock: item.stock - 1 } : item))
+    return response(config, ok(true))
+  }
+
+  if (path === '/my-coupons' && method === 'get') {
+    const user = getUserByToken(config)
+    if (!user) return response(config, fail('未登录', 401), 401)
+    const list = userCouponList
+      .filter((item) => item.userId === user.id)
+      .map((record) => {
+        const coupon = couponOf(
+          couponList.find((item) => item.id === record.couponId),
+          user.id,
+        )
+        return coupon ? { ...coupon, userCouponStatus: record.status } : null
+      })
+      .filter(Boolean)
+    return response(config, ok(list))
   }
 
   if (path === '/addresses' && method === 'get') {

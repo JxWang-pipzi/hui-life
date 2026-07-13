@@ -1,8 +1,9 @@
+let API_BASE_URL
 // #ifdef H5
-const API_BASE_URL = 'http://localhost:3000'
+API_BASE_URL = 'http://localhost:3000'
 // #endif
 // #ifndef H5
-const API_BASE_URL = 'http://192.168.1.8:3000'
+API_BASE_URL = 'http://192.168.1.8:3000'
 // #endif
 
 export function request(path, options = {}) {
