@@ -14,6 +14,7 @@ import {
   profileOf,
   requireAuth,
   requirePermission,
+  signToken,
 } from './helpers.js'
 
 dotenv.config()
@@ -214,7 +215,7 @@ app.post('/auth/login', async (req, res) => {
     res.json(fail('账号已被停用'))
     return
   }
-  res.json(ok({ token: `token-${user.id}`, user: await profileOf(user) }))
+  res.json(ok({ token: signToken(user.id), user: await profileOf(user) }))
 })
 
 app.post('/auth/register', async (req, res) => {
@@ -258,7 +259,7 @@ app.post('/auth/register', async (req, res) => {
     }
     await conn.commit()
     const userRows = await query('SELECT * FROM users WHERE id = :id', { id: userResult.insertId })
-    res.json(ok({ token: `token-${userResult.insertId}`, user: await profileOf(userRows[0]) }))
+    res.json(ok({ token: signToken(userResult.insertId), user: await profileOf(userRows[0]) }))
   } catch (error) {
     await conn.rollback()
     throw error
@@ -338,30 +339,56 @@ app.get('/coupons', requireAuth(async (req, res) => {
 }))
 
 app.post('/coupons/:id/receive', requireAuth(async (req, res) => {
-  const couponRows = await query('SELECT * FROM coupons WHERE id = :id AND status = "enabled"', { id: req.params.id })
-  const coupon = couponRows[0]
-  if (!coupon) {
-    res.json(fail('优惠券不存在'))
-    return
+  const conn = await pool.getConnection()
+  try {
+    await conn.beginTransaction()
+
+    // 行锁锁定优惠券行，防止并发超发
+    const [couponRows] = await conn.execute(
+      'SELECT * FROM coupons WHERE id = ? AND status = "enabled" FOR UPDATE',
+      [req.params.id],
+    )
+    const coupon = couponRows[0]
+    if (!coupon) {
+      await conn.rollback()
+      res.json(fail('优惠券不存在'))
+      return
+    }
+
+    // 同事务内检查是否已领取
+    const [existing] = await conn.execute(
+      'SELECT id FROM user_coupons WHERE user_id = ? AND coupon_id = ? LIMIT 1',
+      [req.user.id, req.params.id],
+    )
+    if (existing.length) {
+      await conn.rollback()
+      res.json(fail('已领取该优惠券'))
+      return
+    }
+
+    // 并发安全减库存：只有 stock > 0 才扣减，靠受影响行数判断
+    const [updateResult] = await conn.execute(
+      'UPDATE coupons SET stock = stock - 1 WHERE id = ? AND stock > 0',
+      [req.params.id],
+    )
+    if (updateResult.affectedRows === 0) {
+      await conn.rollback()
+      res.json(fail('优惠券已领完'))
+      return
+    }
+
+    await conn.execute('INSERT INTO user_coupons (user_id, coupon_id) VALUES (?, ?)', [
+      req.user.id,
+      req.params.id,
+    ])
+    await conn.commit()
+    res.json(ok(true))
+  } catch (error) {
+    await conn.rollback()
+    throw error
+  } finally {
+    conn.release()
   }
-  const existing = await query('SELECT id FROM user_coupons WHERE user_id = :userId AND coupon_id = :couponId', {
-    userId: req.user.id,
-    couponId: req.params.id,
-  })
-  if (existing.length) {
-    res.json(fail('已领取该优惠券'))
-    return
-  }
-  if (coupon.stock <= 0) {
-    res.json(fail('优惠券已领完'))
-    return
-  }
-  await query('INSERT INTO user_coupons (user_id, coupon_id) VALUES (:userId, :couponId)', {
-    userId: req.user.id,
-    couponId: req.params.id,
-  })
-  await query('UPDATE coupons SET stock = stock - 1 WHERE id = :id', { id: req.params.id })
-  res.json(ok(true))
 }))
 
 app.get('/my-coupons', requireAuth(async (req, res) => {

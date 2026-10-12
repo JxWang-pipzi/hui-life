@@ -99,17 +99,22 @@ pnpm format
 
 ## 数据库说明
 
-默认数据库配置：
+数据库连接和 JWT 鉴权通过 `server/.env` 配置。复制 `server/.env.example` 并填写真实值：
 
 ```txt
-host: 127.0.0.1
-port: 3306
-database: life_booking
-user: root
-password: REDACTED_DB_PASSWORD
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=你的 MySQL 密码
+DB_NAME=life_booking
+API_PORT=3000
+JWT_SECRET=生产环境请用随机长字符串
+JWT_EXPIRES_IN=7d
 ```
 
-初始化脚本位于 `server/sql/init.sql`，会创建并写入测试数据：用户、角色、权限、服务、地址、订单、评价、售后、公告、优惠券和操作日志。每个核心业务表都准备了多条原始测试数据，便于直接联调。
+> 安全提示：不要把真实密码或 JWT 密钥提交到 Git 仓库。`.env` 已被 `.gitignore` 忽略，仅 `.env.example` 作为模板提交。
+
+初始化脚本位于 `server/sql/init.sql`，运行 `pnpm db:init` 会提示输入 MySQL 密码，脚本会创建库并写入测试数据：用户、角色、权限、服务、地址、订单、评价、售后、公告、优惠券和操作日志。每个核心业务表都准备了多条原始测试数据，便于直接联调。
 
 ## 工程化练习点
 

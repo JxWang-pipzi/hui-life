@@ -6,12 +6,13 @@
   "scripts": {
     "dev": "node --watch src/app.js",
     "start": "node src/app.js",
-    "db:init": "mysql --default-character-set=utf8mb4 -uroot -pREDACTED_DB_PASSWORD < sql/init.sql"
+    "db:init": "mysql --default-character-set=utf8mb4 -uroot -p < sql/init.sql"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.15.3"
   }
 }

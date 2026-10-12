@@ -1,5 +1,13 @@
 import crypto from 'node:crypto'
+import jwt from 'jsonwebtoken'
 import { query } from './db.js'
+
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me'
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d'
+
+export function signToken(userId) {
+  return jwt.sign({ sub: String(userId) }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN })
+}
 
 export function ok(data = null) {
   return { code: 0, data, message: 'ok' }
@@ -46,9 +54,14 @@ export async function getUserById(id) {
 }
 
 export async function getUserByToken(req) {
-  const token = req.headers.authorization?.replace('Bearer token-', '')
-  if (!token) return null
-  return getUserById(Number(token))
+  const auth = req.headers.authorization
+  if (!auth?.startsWith('Bearer ')) return null
+  try {
+    const payload = jwt.verify(auth.slice(7), JWT_SECRET)
+    return getUserById(Number(payload.sub))
+  } catch {
+    return null
+  }
 }
 
 export async function getUserRoles(userId) {
